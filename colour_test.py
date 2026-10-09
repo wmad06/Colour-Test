@@ -4,6 +4,7 @@ import random
 import math
 
 # Constants
+# default values
 NUMBER_OF_BOXES_WIDE = 2
 NUMBER_OF_BOXES_TALL = 2
 VERTICAL_PADDING = 10
@@ -14,8 +15,9 @@ HORIZONTAL_BOX_SPACING = 20
 VERTICAL_BOX_SPACING = 20
 COLOUR_DISTANCE = 50
 TEST_COLOURS = [
-   "#FFFF00",
    "#FF0000",
+   "#FF774D",
+   "#FFFF00",
    "#00FF00",
    "#0000FF",
 ]
@@ -99,8 +101,8 @@ def randomize_colours(boxes, base_colour=None):
 
 def offset_colour(colour, distance): #takes a given colour and returns a colour with a fixed offset but randomized direction
    rgb = [int(colour[i:i+2], 16) for i in (1,3,5)]
-   for blank in range(256): #sets a maximum number of tries before it gives up
-      direction = [random.gauss(0,1) for i in range(3)]
+   for _ in range(256): #sets a maximum number of tries before it gives up
+      direction = [random.gauss(0,1) for __ in range(3)]
 
       magnitude = math.sqrt(sum(x*x for x in direction))
       offset = [x*distance / magnitude for x in direction]
@@ -145,5 +147,6 @@ canvas.pack(fill="both", expand=True)
 start_screen()
 # run window
 root.mainloop()
-
+# 255,119,77
+# print(f"{255:02x}{119:02x}{77:02x}")
 # end
