@@ -1,3 +1,7 @@
+playing.py
+
+
+# All of the following is default git ignore python stuff
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
