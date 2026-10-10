@@ -71,7 +71,7 @@ def generate_boxes(
       pass
    elif type(text) == str:
       texts = []
-      for i in range(NUMBER_OF_BOXES_TALL):
+      for i in range(number_of_boxes_tall):
             texts.append([])
             for j in range(NUMBER_OF_BOXES_WIDE):
                texts[i].append(canvas.create_text(
@@ -81,13 +81,35 @@ def generate_boxes(
                   fill= "white",
                   font = ("Arial", 20, "bold")
                ))
-   # assign functions to boxes
+   elif type(text) == list:
+      texts = []
+      while len(text) < number_of_boxes_wide*number_of_boxes_tall:
+         text.append("")
+      if all(type(t) == str for t in text):
+            textIndex = 0
+            for i in range(number_of_boxes_tall):
+               texts.append([])
+               for j in range(NUMBER_OF_BOXES_WIDE):
+                  texts[i].append(canvas.create_text(
+                     horizontal_padding + box_width*(j+.5) + horizontal_box_spacing*j,
+                     vertical_padding + box_height*(i+.5) + vertical_box_spacing*i,
+                     text = text[textIndex],
+                     fill= "white",
+                     font = ("Arial", 20, "bold")
+                  ))
+                  textIndex += 1
+   else:
+      print("ERROR: FAILED TO WORK WITH TEXTS FOR BUTTONS")
+      
+   # assign functions to boxes and texts
    if functions == None:
       pass
    elif callable(functions):
       for i in range(number_of_boxes_tall):
          for j in range(number_of_boxes_wide):
             canvas.tag_bind(boxes[i][j], "<Button-1>", lambda event: functions(event, boxes))
+            if texts != None:
+               canvas.tag_bind(texts[i][j], "<Button-1>", lambda event: functions(event, boxes))
    elif isinstance(functions. list):
       while len(functions) < number_of_boxes_wide*number_of_boxes_tall:
          functions.append(pass_function)
@@ -96,6 +118,8 @@ def generate_boxes(
          for i in range(number_of_boxes_tall):
             for j in range(number_of_boxes_wide):
                canvas.tag_bind(boxes[i][j], "<Button-1>", lambda event: functions[functionIndex](event, boxes))
+               if texts != None:
+                  canvas.tag_bind(texts[i][j], "<Button-1>", lambda event: functions(event, boxes))
       else:
          print("ERROR: FAILED TO FIND ONLY FUNCTIONS IN FUNCTION LIST")
 
@@ -145,7 +169,8 @@ def run_test(
    global correct, total
    correct = 0
    total = 0
-   boxes = generate_boxes(NUMBER_OF_BOXES_WIDE, NUMBER_OF_BOXES_TALL, on_click, "potato") #generate grid of boxes
+   my_texts = ["ONE", "too", "THREE", "FOR"]
+   boxes = generate_boxes(NUMBER_OF_BOXES_WIDE, NUMBER_OF_BOXES_TALL, on_click, my_texts) #generate grid of boxes
 
    randomize_colours(boxes)
 
